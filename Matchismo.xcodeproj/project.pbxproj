@@ -35,8 +35,8 @@
 		F0B9F178204E829100DEAC77 /* PlayingCardDeck.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayingCardDeck.mm; sourceTree = "<group>"; };
 		F0B9F179204E829100DEAC77 /* PlayingCardDeck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayingCardDeck.h; sourceTree = "<group>"; };
 		F0B9F17B204E8C1A00DEAC77 /* PlayingCard.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayingCard.mm; sourceTree = "<group>"; };
-		F0B9F17C204E8C1A00DEAC77 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
-		F0B9F17D204E8C1A00DEAC77 /* Deck.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Deck.mm; sourceTree = "<group>"; };
+		F0B9F17C204E8C1A00DEAC77 /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; tabWidth = 2; };
+		F0B9F17D204E8C1A00DEAC77 /* Deck.mm */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = Deck.mm; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; wrapsLines = 1; };
 		F0B9F17E204E8C1A00DEAC77 /* PlayingCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayingCard.h; sourceTree = "<group>"; };
 		F0B9F17F204E8C1A00DEAC77 /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deck.h; sourceTree = "<group>"; };
 		F0B9F180204E8C1A00DEAC77 /* Card.mm */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Card.mm; sourceTree = "<group>"; };
@@ -75,7 +75,6 @@
 		F01745BD204D4E7C00AF5625 /* Matchismo */ = {
 			isa = PBXGroup;
 			children = (
-				F0B9F184204E8DAA00DEAC77 /* group */,
 				F0B9F16E204D869200DEAC77 /* Model */,
 				F01745C2204D4E7C00AF5625 /* CardGameViewController.mm */,
 				F01745C1204D4E7C00AF5625 /* CardGameViewController.h */,
@@ -105,13 +104,6 @@
 				F0B9F179204E829100DEAC77 /* PlayingCardDeck.h */,
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		F0B9F184204E8DAA00DEAC77 /* group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = group;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

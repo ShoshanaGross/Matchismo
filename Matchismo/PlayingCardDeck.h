@@ -6,8 +6,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Object that reprenets a deck of playing cards.
 @interface PlayingCardDeck : Deck
-- (void)createDeck;
+
 @end
 
 NS_ASSUME_NONNULL_END

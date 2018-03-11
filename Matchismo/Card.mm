@@ -6,16 +6,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation Card
--(int)match:(NSArray *)otherCards
-{
-    int score = 0;
-    
-    for (Card *card in otherCards){
-        if([card.contents isEqualToString:self.contents]){
-            score = 1;
-        }
+
+- (int)match:(NSArray *)otherCards {
+  for (Card *card in otherCards) {
+    if([card.contents isEqualToString:self.contents]){
+      return 1;
     }
-    return score;
+  }
+  return 0;
 }
 @end
+
 NS_ASSUME_NONNULL_END

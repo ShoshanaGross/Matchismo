@@ -1,18 +1,13 @@
-//
-//  ViewController.h
-//  Matchismo
-//
-//  Created by Shoshana Gross on 05/03/2018.
-//  Copyright © 2018 Lightricks. All rights reserved.
-//
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Shoshana Gross.
 
 #import <UIKit/UIKit.h>
-#import "Deck.h"
-#import "PlayingCard.h"
-#import "PlayingCardDeck.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+/// Controller for the card game view.
 @interface CardGameViewController : UIViewController
-
 
 @end
 
+NS_ASSUME_NONNULL_END
