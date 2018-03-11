@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  ViewController.h
 //  Matchismo
 //
 //  Created by Shoshana Gross on 05/03/2018.
@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Deck.h"
+#import "PlayingCard.h"
+#import "PlayingCardDeck.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
+@interface CardGameViewController : UIViewController
 
 
 @end

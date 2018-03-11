@@ -6,13 +6,13 @@
 //  Copyright © 2018 Lightricks. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "CardGameAppDelegate.h"
 
-@interface AppDelegate ()
+@interface CardGameAppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation CardGameAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
