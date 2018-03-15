@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self.cards removeObjectAtIndex:index];
   return randomCard;
 }
+
 @end
 
 NS_ASSUME_NONNULL_END

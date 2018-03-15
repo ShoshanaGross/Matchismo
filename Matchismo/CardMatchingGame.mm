@@ -3,6 +3,11 @@
 
 #import "CardMatchingGame.h"
 
+#import "Card.h"
+#import "CardGameHistory.h"
+#import "CardGameMove.h"
+#import "Deck.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CardMatchingGame()
@@ -10,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Score of the game.
 @property (nonatomic, readwrite) NSInteger score;
 
-/// Description of last move in the game.
-@property (nonatomic, strong, readwrite) NSString *moveDescription;
+/// History of the game.
+@property (nonatomic, strong, readwrite) CardGameHistory *history;
 
 // Array of cards that participates in the game.
 @property (nonatomic, strong) NSArray *cards;
@@ -26,10 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithCardCount:(NSUInteger)count deck:(Deck *)deck {
-  return [self initWithCardCount:count deck:deck mode:GameModeTwoCardsMatch];
-}
-
-- (instancetype)initWithCardCount:(NSUInteger)count deck:(Deck *)deck mode:(GameMode)mode {
   
   if (self = [super init]) {
     NSMutableArray *cards = [[NSMutableArray alloc] init];
@@ -44,8 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
       }
     }
     self.cards = [cards copy];
-    _moveDescription = [[NSString alloc] init];
-    _mode = mode;
+    _history = [[CardGameHistory alloc] init];
   }
   return self;
 }
@@ -59,27 +59,32 @@ static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
-    Card *card = [self cardAtIndex:index];
-    if (card.matched) {
-        return;
+  Card *card = [self cardAtIndex:index];
+  if (card.matched) {
+    return;
+  }
+  if (card.isChosen) {
+    card.chosen = NO;
+    return;
+  }
+  CardGameMove *move = [[CardGameMove alloc] initWithType:MoveTypeChoise score:0
+                                              chosenCards:@[card]];
+  [self.history addMove:move];
+  NSMutableArray *allCardsInMove = [[NSMutableArray alloc] init];
+  [allCardsInMove addObject:card];
+  NSArray *chosenCards = [self findChosenCards];
+  if ([self shouldCheckForMatch:chosenCards]) {
+    [allCardsInMove addObjectsFromArray:chosenCards];
+    int matchScore  = [card match:chosenCards];
+    if (matchScore){
+      [self handleMatchOfCards:allCardsInMove score:matchScore];
     }
-    if (card.isChosen) {
-        card.chosen = NO;
-        return;
+    else{
+      [self handleMissMatchOfCards:allCardsInMove];
     }
-    self.moveDescription = [card contents];
-    NSArray *chosenCards = [self findChosenCards];
-    if ([self shouldCheckForMatch:chosenCards]) {
-        int matchScore  = [card match:chosenCards];
-        if (matchScore){
-            [self handleMatchOfCard:card chosenCards:chosenCards score:matchScore];
-        }
-        else{
-            [self handleMissMatchOfCard:card chosenCards:chosenCards];
-        }
-    }
-    self.score -= COST_TO_CHOOSE;
-    card.chosen = YES;
+  }
+  self.score -= COST_TO_CHOOSE;
+  card.chosen = YES;
 }
 
 // Finds chosen cards to try to match to card.
@@ -88,48 +93,39 @@ static const int COST_TO_CHOOSE = 1;
   for (Card *card in self.cards) {
     if (card.isChosen && !card.isMatched) {
       [chosenCards addObject:card];
-      if (self.mode == 0) {
-        break;
-      }
     }
   }
   return [chosenCards copy];
 }
 
 - (BOOL)shouldCheckForMatch:(NSArray *)chosenCards {
-  if ((self.mode == 0 && chosenCards.count == 1) || (self.mode == 1 && chosenCards.count == 2)) {
-    return YES;
-  }
   return NO;
 }
 
-// Handles case of match - updates score of the game, updates move description and update chosen
-// cards state to be matched.
-- (void)handleMatchOfCard:(Card *)card chosenCards:(NSArray *)cardsToMatch
-                    score:(NSUInteger)matchScore {
-  NSString *cardsContent = [NSString stringWithFormat:@"%@ ", card.contents];
-  self.score += matchScore * MATCH_BONUS;
-  for (Card *chosenCard in cardsToMatch){
+// Handles case of match - updates score of the game, history, and chosen cards states.
+- (void)handleMatchOfCards:(NSArray *)chosenCards score:(NSUInteger)matchScore {
+  NSInteger addedScore = matchScore * MATCH_BONUS;
+  [self updateHistroyWithMove:MoveTypeMatch score:addedScore cards:chosenCards];
+  self.score += addedScore;
+  for (Card *chosenCard in chosenCards){
     chosenCard.matched = YES;
-    cardsContent = [cardsContent stringByAppendingFormat:@"%@ ", chosenCard.contents];
   }
-  card.matched = YES;
-  self.moveDescription = [NSString stringWithFormat:@"Matched %@ for %lu points",
-                          cardsContent, (matchScore * MATCH_BONUS)];
 }
 
-// Handles case of missmatch - updates score of the game, updates move description and updates
-// chosen cards to be unchose, exept card which is still chosen.
-- (void)handleMissMatchOfCard:(Card *)card chosenCards:(NSArray *)chosenCards {
-  NSString *cardsContent = [NSString stringWithFormat:@"%@ ", card.contents];
+// Handles case of missmatch - updates score of the game, histroy, and chosen cards states.
+- (void)handleMissMatchOfCards:(NSArray *)chosenCards {
+  [self updateHistroyWithMove:MoveTypeMismatch score:MISMATCH_PENALTY cards:chosenCards];
   self.score -= MISMATCH_PENALTY;
   for (Card *chosenCard in chosenCards) {
     chosenCard.chosen = NO;
-    cardsContent = [cardsContent stringByAppendingFormat:@"%@ ", chosenCard.contents];
-    
   }
-  self.moveDescription = [NSString stringWithFormat:@"%@ don't match! %d points penalty!",
-                          cardsContent, MISMATCH_PENALTY];
+}
+
+- (void)updateHistroyWithMove:(MoveType)moveType score:(NSInteger)score
+                        cards:(NSArray *)chosenCards {
+  CardGameMove *move = [[CardGameMove alloc] initWithType:moveType score:score
+                                              chosenCards:chosenCards];
+  [self.history addMove:move];
 }
 
 @end

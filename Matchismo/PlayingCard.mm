@@ -9,7 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)contents {
   NSArray *rankStrings = [PlayingCard rankStrings];
-  return [rankStrings[self.rank] stringByAppendingString:self.suit];
+  NSString *contents = [NSString stringWithFormat:@"%@ %@",  rankStrings[self.rank], self.suit];
+  return contents;
 }
 
 @synthesize suit = _suit;
@@ -42,49 +43,22 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (int)match:(NSArray *)otherCards
-{
-  if ([otherCards count] == 1) {
-    return [self calcTwoCardsMatchScore:[otherCards firstObject]];
-  }
-  else if ([otherCards count] == 2) {
-    return [self calcThreeCardsMatchScore:otherCards];
+- (int)match:(NSArray *)otherCards {
+  if (otherCards.count == 1) {
+    return [self calcScore:[otherCards firstObject]];
   }
   return 0;
 }
 
 // Methode that returns the score of matching 2 cards.
-- (int)calcTwoCardsMatchScore:(PlayingCard *)otherCard {
-  int score = 0;
+- (int)calcScore:(PlayingCard *)otherCard {
   if (otherCard.rank == self.rank) {
-    score =  4;
+    return 4;
   }
   else if (otherCard.suit == self.suit){
-    score = 1;
+    return 1;
   }
-  return score;
-}
-
-// Methode that returns the score of matching 3 cards.
-- (int)calcThreeCardsMatchScore:(NSArray *)otherCards {
-  int score = 0;
-  PlayingCard *firstCard = [otherCards firstObject];
-  PlayingCard *secondCard = [otherCards objectAtIndex:1];
-  if (firstCard.rank == self.rank && secondCard.rank == self.rank) {
-    score = 10;
-  }
-  else if(firstCard.suit == self.suit && secondCard.suit == self.suit) {
-    score = 5;
-  }
-  else if(firstCard.rank == self.rank || secondCard.rank == self.rank ||
-          firstCard.rank == secondCard.rank) {
-    score = 3;
-  }
-  else if(firstCard.suit == self.suit || secondCard.suit == self.suit ||
-          firstCard.suit == secondCard.suit) {
-    score = 1;
-  }
-  return score;
+  return 0;
 }
 
 @end

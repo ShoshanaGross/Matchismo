@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PlayingCardDeck
 
-// Initializer that creates a playing cards deck.
 - (instancetype)init {
   if (self = [super init]) {
     for (NSUInteger i = 1; i <= [PlayingCard maxRank]; i++) {

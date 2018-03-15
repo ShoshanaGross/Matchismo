@@ -8,13 +8,14 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation Card
 
 - (int)match:(NSArray *)otherCards {
-  for (Card *card in otherCards) {
-    if([card.contents isEqualToString:self.contents]){
-      return 1;
+    for (Card *currentCard in otherCards) {
+        if ([self isEqual:currentCard]) {
+            return 1;
+        }
     }
-  }
-  return 0;
+    return 0;
 }
+
 @end
 
 NS_ASSUME_NONNULL_END
