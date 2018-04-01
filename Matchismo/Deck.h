@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addCard:(Card *)card;
 
 /// Method that returns a random card drawn from the deck. If deck is empty returns nil.
--(Card *)drawRandomCard;
+-(nullable Card *)drawRandomCard;
 
 @end
 

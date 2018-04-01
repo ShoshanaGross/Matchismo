@@ -13,12 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
     for (NSInteger number = 1; number <= 3; number++) {
       for (int symbol = SetCardSymbolDiamond; symbol <= SetCardSymbolOval; symbol++) {
         for (int color = SetCardColorGreen; color <= SetCardColorRed; color ++) {
-          for (int shading = SetCardSahdingSolid; shading <= SetCardSahdingOpen; shading ++) {
-            SetCard *card =[[SetCard alloc] init];
-            card.number = number;
-            card.symbol = (SetCardSymbol)symbol;
-            card.color = (SetCardColor)color;
-            card.shading = (SetCardSahding)shading;
+          for (int shading = SetCardShadingSolid; shading <= SetCardShadingOpen; shading ++) {
+            SetCard *card =[[SetCard alloc] initWithNumber:number color:(SetCardColor)color
+                                                    symbol:(SetCardSymbol)symbol
+                                                   shading:(SetCardShading)shading];
             [self addCard:card];
           }
         }

@@ -4,20 +4,19 @@
 #import "SetMatchingGame.h"
 
 NS_ASSUME_NONNULL_BEGIN
+@interface SetMatchingGame()
+
+// Currently chosen cards;
+@property (nonatomic) NSMutableArray< Card *> *chosenCards;
+
+@end
 
 @implementation SetMatchingGame
 
-- (instancetype)initWithCardCount:(NSUInteger)count deck:(Deck *)deck {
-  return [super initWithCardCount:count deck:deck];
-}
-
-static const int kNUM_OF_CARDS_FOR_SET = 2;
+static const int kNumberOfCardsForSet = 3;
 
 - (BOOL)shouldCheckForMatch:(NSArray *)chosenCards {
-  if (chosenCards.count == kNUM_OF_CARDS_FOR_SET) {
-    return YES;
-  }
-  return NO;
+  return chosenCards.count == kNumberOfCardsForSet;
 }
 
 @end

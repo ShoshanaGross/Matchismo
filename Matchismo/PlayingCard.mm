@@ -9,8 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)contents {
   NSArray *rankStrings = [PlayingCard rankStrings];
-  NSString *contents = [NSString stringWithFormat:@"%@ %@",  rankStrings[self.rank], self.suit];
-  return contents;
+  return (NSString *)[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", rankStrings[self.rank], self.suit]];
 }
 
 @synthesize suit = _suit;
@@ -26,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSArray *)validSuits {
-  return @[@"♣️", @"♠️", @"♥️", @"♦️"];
+  return @[@"♣︎", @"♠︎", @"♥︎", @"♦︎"];
 }
 
 + (NSArray *)rankStrings {
@@ -50,7 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
   return 0;
 }
 
-// Methode that returns the score of matching 2 cards.
 - (int)calcScore:(PlayingCard *)otherCard {
   if (otherCard.rank == self.rank) {
     return 4;

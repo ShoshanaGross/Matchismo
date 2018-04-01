@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self addCard:card atTop:NO];
 }
 
--(Card *)drawRandomCard {
+-(nullable Card *)drawRandomCard {
   if(!self.cards.count) {
     return nil;
   }

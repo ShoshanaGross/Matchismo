@@ -9,14 +9,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation SetCard
 
+- (instancetype)initWithNumber:(NSInteger)number color:(SetCardColor)color
+                        symbol:(SetCardSymbol)symbol
+                       shading:(SetCardShading)shading {
+  if (self = [super init]) {
+    _number = number;
+    _color = color;
+    _symbol = symbol;
+    _shading = shading;
+  }
+  return self;
+}
+
 - (int)match:(NSArray *)otherCards {
   if (otherCards.count == 2) {
-    return [self calcMatchScore:otherCards];
+    return [self calculateMatchScore:otherCards];
   }
   return 0;
 }
 
-- (int)calcMatchScore:(NSArray *)otherCards {
+- (int)calculateMatchScore:(NSArray< SetCard *>*)otherCards {
   NSMutableArray *chosenCardsArray = [NSMutableArray arrayWithArray:otherCards];
   [chosenCardsArray addObject:self];
   NSMutableSet *cardsNumbersSet = [NSMutableSet setWithCapacity:3];
@@ -29,18 +41,19 @@ NS_ASSUME_NONNULL_BEGIN
     [cardsSymbolsSet addObject:@(card.symbol)];
     [cardsShadingsSet addObject:@(card.shading)];
   }
-  if ([self isSetValid:cardsNumbersSet] && [self isSetValid:cardsColorsSet] &&
-      [self isSetValid:cardsSymbolsSet] && [self isSetValid:cardsShadingsSet]) {
-    return 12;
-  }
-  return 0;
+  return ([self isSetSizeMatchGameRules:cardsNumbersSet] &&
+          [self isSetSizeMatchGameRules:cardsColorsSet] &&
+          [self isSetSizeMatchGameRules:cardsSymbolsSet] &&
+          [self isSetSizeMatchGameRules:cardsShadingsSet]) ? 12 : 0;
 }
 
-- (BOOL)isSetValid:(NSSet *)cardsSet {
-  if (cardsSet.count == 1 || cardsSet.count == 3){
-    return YES;
-  }
-  return NO;
+const static int kAttributesAreAllTheSame = 1;
+const static int kAttributesAreAllDifferent = 3;
+
+
+- (BOOL)isSetSizeMatchGameRules:(NSSet *)cardsSet {
+  return (cardsSet.count == kAttributesAreAllTheSame ||
+          cardsSet.count == kAttributesAreAllDifferent) ? YES : NO;
 }
 
 - (NSString *)contents {
@@ -48,14 +61,13 @@ NS_ASSUME_NONNULL_BEGIN
   for (int i = 0; i < self.number; i++) {
     title = [NSString stringWithFormat:@"%@ %@", title, [self symbolOnCard]];
   }
-  //UIColor *color = [self colorAtrribute];
-  float alpha = [self shadingAtrribute];
+  CGFloat alpha = [self shadingAtrribute];
   UIColor *forgroundColor = [[self colorAtrribute] colorWithAlphaComponent:alpha];
   UIColor *strokeColor = [self colorAtrribute];
   NSMutableAttributedString *attributedTitle =
-  [[NSMutableAttributedString alloc] initWithString:title attributes:@{
-      NSForegroundColorAttributeName:forgroundColor, NSStrokeWidthAttributeName: @-3,
-      NSStrokeColorAttributeName: strokeColor}];
+  [[NSMutableAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:forgroundColor,
+                       NSStrokeWidthAttributeName:@-3,
+                       NSStrokeColorAttributeName:strokeColor}];
   return (NSString *)attributedTitle;
 }
 
@@ -67,8 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
       return [UIColor redColor];
     case SetCardColorPurple:
       return [UIColor purpleColor];
-    default:
-      return nil;
   }
 }
 
@@ -80,21 +90,17 @@ NS_ASSUME_NONNULL_BEGIN
       return @"▲";
     case SetCardSymbolSquiggle:
       return @"■";
-    default:
-      return nil;
   }
 }
 
 - (float)shadingAtrribute{
   switch (self.shading) {
-    case SetCardSahdingOpen:
+    case SetCardShadingOpen:
       return 0;
-    case SetCardSahdingStriped:
+    case SetCardShadingStriped:
       return 0.3;
-    case SetCardSahdingSolid:
+    case SetCardShadingSolid:
       return 1;
-    default:
-      return 0;
   }
 }
 
